@@ -1,0 +1,32 @@
+# ## Configure 'ip' variable to bind kubernetes services on a
+# ## different ip than the default iface
+# ## We should set etcd_member_name for etcd cluster. The node that is not a etcd member do not need to set the value, or can set the empty string value.
+[all]
+cp ansible_host=${cp}  ip=${cp_internal_address} etcd_member_name=etcd1
+node-0-stage ansible_host=${node-0-stage}   ip=${node-0-stage_internal_address}
+node-1-stage ansible_host=${node-1-stage}   ip=${node-1-stage_internal_address}
+
+# ## configure a bastion host if your nodes are not directly reachable
+# [bastion]
+# bastion ansible_host=x.x.x.x ansible_user=some_user
+
+[kube_control_plane]
+cp
+
+[etcd]
+cp
+
+[kube_node]
+node-0-stage
+node-1-stage
+ingress-stage
+
+[kube-ingress]
+ingress-stage
+
+[calico_rr]
+
+[k8s_cluster:children]
+kube_control_plane
+kube_node
+calico_rr

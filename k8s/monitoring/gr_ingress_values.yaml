@@ -1,0 +1,18 @@
+---
+controller:
+  ingressClassResource:
+    name: nginx-grafana
+    controllerValue: stop.me.please/ingress-nginx-2
+    enabled: true
+    ingressClassByName: true
+  hostPort:
+    enabled: true
+    ports:
+      http: 81
+      https: 444
+  nodeSelector:
+    node-role.kubernetes.io/ingress: "true"
+  tolerations: 
+    - key: node-role.kubernetes.io/ingress
+      operator: Exists
+      effect: NoSchedule
